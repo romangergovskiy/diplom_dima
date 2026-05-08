@@ -1,0 +1,181 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f6fb;
+  color: #1f2937;
+}
+
+header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+header h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+}
+
+header p {
+  margin: 0;
+  color: #4b5563;
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(320px, 460px) 1fr;
+  grid-template-rows: minmax(360px, 1fr) auto;
+  gap: 16px;
+  padding: 16px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.controls {
+  grid-row: 1 / span 2;
+}
+
+.controls textarea {
+  width: 100%;
+  min-height: 460px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  margin-top: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.controls input,
+.controls select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 6px 0 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+button,
+a {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 14px;
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+}
+
+button.secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+a {
+  background: #10b981;
+  color: #fff;
+}
+
+a.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+#status {
+  margin: 10px 0 0;
+  color: #374151;
+}
+
+.constructor {
+  margin-top: 2px;
+}
+
+.constructor h3 {
+  margin: 4px 0 8px;
+  font-size: 14px;
+}
+
+.constructor-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.secondary-actions {
+  margin-top: 10px;
+}
+
+.result {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.hint {
+  margin: 0 0 8px;
+  color: #4b5563;
+  font-size: 13px;
+}
+
+#viewer {
+  width: 100%;
+  height: 520px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.metrics {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 4px;
+  text-align: left;
+  font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .controls,
+  .result,
+  .metrics {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

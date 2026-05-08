@@ -1,0 +1,17 @@
+# Кронштейн: основание + стенка (условные единицы длины)
+param L 0.12
+param W 0.06
+param T 0.02
+param H 0.08
+param wall_t 0.015
+param z0 0
+param x0 0
+param y0 0
+param x1 0 expr L
+param y1 0 expr W
+param xc 0 expr L / 2
+param xl 0 expr xc - wall_t / 2
+param xr 0 expr xc + wall_t / 2
+
+extrude base_plate T x0 y0 x1 y0 x1 y1 x0 y1
+extrude wall H xl y0 xr y0 xr y1 xl y1

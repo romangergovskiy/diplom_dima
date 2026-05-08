@@ -1,0 +1,7 @@
+param a 0.1
+param b 0.05
+param c 0.03
+param ox 0
+param oy 0
+param oz 0
+box main ox oy oz a b c

@@ -1,0 +1,7 @@
+# Фланец: цилиндр как упрощённая деталь
+param ox 0
+param oy 0
+param R 0.04
+param H 0.02
+param zc 0 expr H / 2
+cylinder body ox oy zc R H z
