@@ -87,15 +87,17 @@
       if (v[1] > maxY) maxY = v[1];
       if (v[2] > maxZ) maxZ = v[2];
     }
-    const cx = (minX + maxX) / 2;
-    const cy = (minY + maxY) / 2;
-    const cz = (minZ + maxZ) / 2;
-    const sx = maxX - minX;
-    const sy = maxY - minY;
-    const sz = maxZ - minZ;
-    const scale = 1 / Math.max(1e-9, Math.max(sx, sy, sz));
+    const maxAbs = Math.max(
+      Math.abs(minX),
+      Math.abs(maxX),
+      Math.abs(minY),
+      Math.abs(maxY),
+      Math.abs(minZ),
+      Math.abs(maxZ)
+    );
+    const scale = 1 / Math.max(1e-9, maxAbs);
     return {
-      vertices: verts.map((v) => [(v[0] - cx) * scale, (v[1] - cy) * scale, (v[2] - cz) * scale]),
+      vertices: verts.map((v) => [v[0] * scale, v[1] * scale, v[2] * scale]),
       faces: data.faces || [],
     };
   }
@@ -299,7 +301,9 @@
   });
 
   addBoxBtn.addEventListener("click", () => {
-    addCommandTemplate("box box1 ox oy oz dx dy dz");
+    addCommandTemplate(
+      "param ox 0\nparam oy 0\nparam oz 0\nparam dx 10\nparam dy 10\nparam dz 10\nbox box1 ox oy oz dx dy dz"
+    );
   });
 
   addCylinderBtn.addEventListener("click", () => {
