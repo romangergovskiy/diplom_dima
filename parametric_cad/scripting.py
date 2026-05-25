@@ -22,7 +22,8 @@ def execute_script(doc: Document, source: str) -> None:
       param <имя> <число> [expr остаток_строки_выражение]
       box <id> <cx> <cy> <cz> <dx> <dy> <dz>   — имена параметров для размеров и центра
       cylinder <id> <cx> <cy> <cz> <R> <H> [axis x|y|z]
-      extrude <id> <h_высота> <x1> <y1> <x2> <y2> ...  — пары имён параметров вершин
+      extrude <id> <h_высота> <x1> <y1> <x2> <y2> ... [offset ox oy oz]
+         — пары имён параметров вершин и необязательное смещение
     """
     for raw in source.splitlines():
         stripped = raw.split("#", 1)[0].strip()
@@ -70,14 +71,35 @@ def execute_script(doc: Document, source: str) -> None:
                 CylinderFeature(fid, cx, cy, cz, r, h, axis=axis)
             )
         elif cmd == "extrude":
-            if len(parts) < 6 or (len(parts) - 3) % 2 != 0:
-                raise ValueError(f"extrude: id height x1 y1 x2 y2 ...: {raw}")
+            if len(parts) < 6:
+                raise ValueError(
+                    f"extrude: id height x1 y1 x2 y2 ... [offset ox oy oz]: {raw}"
+                )
             fid = parts[1]
             height = parts[2]
             pairs: List[Tuple[str, str]] = []
             rest = parts[3:]
+            offset_x = None
+            offset_y = None
+            offset_z = None
+            if len(rest) >= 4 and rest[-4].lower() == "offset":
+                offset_x, offset_y, offset_z = rest[-3:]
+                rest = rest[:-4]
+            if len(rest) < 4 or len(rest) % 2 != 0:
+                raise ValueError(
+                    f"extrude: id height x1 y1 x2 y2 ... [offset ox oy oz]: {raw}"
+                )
             for i in range(0, len(rest), 2):
                 pairs.append((rest[i], rest[i + 1]))
-            doc.add_feature(ExtrudeFeature(fid, pairs, height))
+            doc.add_feature(
+                ExtrudeFeature(
+                    fid,
+                    pairs,
+                    height,
+                    offset_x=offset_x,
+                    offset_y=offset_y,
+                    offset_z=offset_z,
+                )
+            )
         else:
             raise ValueError(f"неизвестная команда: {cmd}")

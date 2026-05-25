@@ -57,7 +57,7 @@ python main.py examples/cylinder_mount.txt -o cylinder.stl
 | `param ИМЯ ЧИСЛО expr ФОРМУЛА` | параметр, вычисляемый из других |
 | `box ID cx cy cz dx dy dz` | параллелепипед; все поля — **имена** параметров |
 | `cylinder ID cx cy cz R H [x\|y\|z \| axis x\|y\|z]` | цилиндр; последний токен — ось (по умолчанию z) |
-| `extrude ID высота x1 y1 x2 y2 …` | замкнутый контур в XY, экструзия вдоль Z |
+| `extrude ID высота x1 y1 x2 y2 … [offset ox oy oz]` | замкнутый контур в XY, экструзия вдоль Z с опциональным смещением |
 
 Строки с `#` — комментарии.
 

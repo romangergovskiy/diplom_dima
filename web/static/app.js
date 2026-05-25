@@ -127,6 +127,88 @@
     setStatus("Шаблон команды добавлен.");
   }
 
+  function nextTemplateIndex(prefix) {
+    const regex = new RegExp(`\\b${prefix}(\\d+)\\b`, "gi");
+    let maxIndex = 0;
+    for (const match of scriptEl.value.matchAll(regex)) {
+      const n = Number(match[1]);
+      if (Number.isFinite(n) && n > maxIndex) {
+        maxIndex = n;
+      }
+    }
+    return maxIndex + 1;
+  }
+
+  function createBoxTemplate() {
+    const idx = nextTemplateIndex("box");
+    const id = `box${idx}`;
+    const ox = `${id}_ox`;
+    const oy = `${id}_oy`;
+    const oz = `${id}_oz`;
+    const dx = `${id}_dx`;
+    const dy = `${id}_dy`;
+    const dz = `${id}_dz`;
+    return [
+      `param ${ox} 0`,
+      `param ${oy} 0`,
+      `param ${oz} 0`,
+      `param ${dx} 10`,
+      `param ${dy} 10`,
+      `param ${dz} 10`,
+      `box ${id} ${ox} ${oy} ${oz} ${dx} ${dy} ${dz}`,
+    ].join("\n");
+  }
+
+  function createCylinderTemplate() {
+    const idx = nextTemplateIndex("cyl");
+    const id = `cyl${idx}`;
+    const cx = `${id}_cx`;
+    const cy = `${id}_cy`;
+    const cz = `${id}_cz`;
+    const r = `${id}_r`;
+    const h = `${id}_h`;
+    return [
+      `param ${cx} 0`,
+      `param ${cy} 0`,
+      `param ${cz} 0`,
+      `param ${r} 5`,
+      `param ${h} 10`,
+      `cylinder ${id} ${cx} ${cy} ${cz} ${r} ${h} axis z`,
+    ].join("\n");
+  }
+
+  function createExtrudeTemplate() {
+    const idx = nextTemplateIndex("ext");
+    const id = `ext${idx}`;
+    const h = `${id}_h`;
+    const ox = `${id}_ox`;
+    const oy = `${id}_oy`;
+    const oz = `${id}_oz`;
+    const x0 = `${id}_x0`;
+    const y0 = `${id}_y0`;
+    const x1 = `${id}_x1`;
+    const y1 = `${id}_y1`;
+    const x2 = `${id}_x2`;
+    const y2 = `${id}_y2`;
+    const x3 = `${id}_x3`;
+    const y3 = `${id}_y3`;
+    return [
+      `param ${h} 10`,
+      `param ${ox} 0`,
+      `param ${oy} 0`,
+      `param ${oz} 0`,
+      `param ${x0} 0`,
+      `param ${y0} 0`,
+      `param ${x1} 10`,
+      `param ${y1} 0`,
+      `param ${x2} 10`,
+      `param ${y2} 10`,
+      `param ${x3} 0`,
+      `param ${y3} 10`,
+      `extrude ${id} ${h} ${x0} ${y0} ${x1} ${y1} ${x2} ${y2} ${x3} ${y3} offset ${ox} ${oy} ${oz}`,
+    ].join("\n");
+  }
+
   function saveScriptToFile() {
     const text = scriptEl.value;
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
@@ -301,17 +383,15 @@
   });
 
   addBoxBtn.addEventListener("click", () => {
-    addCommandTemplate(
-      "param ox 0\nparam oy 0\nparam oz 0\nparam dx 10\nparam dy 10\nparam dz 10\nbox box1 ox oy oz dx dy dz"
-    );
+    addCommandTemplate(createBoxTemplate());
   });
 
   addCylinderBtn.addEventListener("click", () => {
-    addCommandTemplate("cylinder cyl1 cx cy cz r h axis z");
+    addCommandTemplate(createCylinderTemplate());
   });
 
   addExtrudeBtn.addEventListener("click", () => {
-    addCommandTemplate("extrude ext1 height x0 y0 x1 y0 x1 y1 x0 y1");
+    addCommandTemplate(createExtrudeTemplate());
   });
 
   saveScriptBtn.addEventListener("click", saveScriptToFile);

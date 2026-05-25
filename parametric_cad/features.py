@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import trimesh
@@ -94,10 +94,16 @@ class ExtrudeFeature(Feature):
         fid: str,
         point_param_pairs: List[Tuple[str, str]],
         height: str,
+        offset_x: Optional[str] = None,
+        offset_y: Optional[str] = None,
+        offset_z: Optional[str] = None,
     ) -> None:
         self.id = fid
         self.point_param_pairs = point_param_pairs
         self.height = height
+        self.offset_x = offset_x
+        self.offset_y = offset_y
+        self.offset_z = offset_z
 
     def build(self, ctx: BuildContext) -> trimesh.Trimesh:
         p = ctx.params
@@ -107,6 +113,14 @@ class ExtrudeFeature(Feature):
             poly = poly.buffer(0)
         h = p.get(self.height)
         mesh = trimesh.creation.extrude_polygon(poly, height=h)
+        if (
+            self.offset_x is not None
+            and self.offset_y is not None
+            and self.offset_z is not None
+        ):
+            mesh.apply_translation(
+                [p.get(self.offset_x), p.get(self.offset_y), p.get(self.offset_z)]
+            )
         return mesh
 
 
